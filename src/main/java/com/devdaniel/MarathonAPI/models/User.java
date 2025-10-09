@@ -36,4 +36,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(length = 1, nullable = false)
     private GenEnum gender;
+
+    @Column(length = 1)
+    @Pattern(regexp = "^[A-Za-z]$", message = "A camisa deve ter um tamanho.")
+    private Character shirt;
+
+    @NotBlank(message = "Cidade não pode ser vazio")
+    @Size(max = 50, message = "Cidade deve ter no máximo 50 caracteres")
+    @Column(nullable = false)
+    private String city;
 }

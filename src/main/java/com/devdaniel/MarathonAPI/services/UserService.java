@@ -39,6 +39,8 @@ public class UserService {
         existing.setCpf(updatedUser.getCpf());
         existing.setBirthDate(updatedUser.getBirthDate());
         existing.setGender(updatedUser.getGender());
+        existing.setShirt(updatedUser.getShirt());
+        existing.setCity(updatedUser.getCity());
 
         return userRepository.save(existing);
     }
