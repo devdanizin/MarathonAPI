@@ -37,12 +37,35 @@ public class User {
     @Column(length = 1, nullable = false)
     private GenEnum gender;
 
-    @Column(length = 1)
+    @Column(length = 2 )
     @Pattern(regexp = "^[A-Za-z]$", message = "A camisa deve ter um tamanho.")
-    private Character shirt;
+    private String shirt;
 
     @NotBlank(message = "Cidade não pode ser vazio")
     @Size(max = 50, message = "Cidade deve ter no máximo 50 caracteres")
     @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false, length = 8)
+    private String code;
+
+    @PrePersist
+    private void generate() {
+
+        if(code == null || code.isEmpty()) {
+            this.code = generateRandomCode(8);
+        }
+
+    }
+
+    private String generateRandomCode(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder codeBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * chars.length());
+            codeBuilder.append(chars.charAt(index));
+        }
+        return codeBuilder.toString();
+    }
+
 }

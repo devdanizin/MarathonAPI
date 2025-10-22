@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários - PiauíCrono</title>
+    <link rel="stylesheet" href="https://www.piauicrono.com.br/styles/bootstrap-4.1.2/bootstrap.min.css">
+    <link href="https://www.piauicrono.com.br/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 15px;
+        }
+
+        #searchInput {
+            max-width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn-copy {
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        /* Tornar a tabela responsiva em telas pequenas */
+        @media (max-width: 768px) {
+            #usersTable thead {
+                display: none; /* Esconde o cabeçalho da tabela */
+            }
+
+            #usersTable, #usersTable tbody, #usersTable tr, #usersTable td {
+                display: block;
+                width: 100%;
+            }
+
+            #usersTable tr {
+                margin-bottom: 15px;
+                border: 1px solid #dee2e6;
+                border-radius: 5px;
+                padding: 10px;
+            }
+
+            #usersTable td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+
+            #usersTable td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: calc(50% - 30px);
+                text-align: left;
+                font-weight: bold;
+            }
+
+            #usersTable td:last-child {
+                border-bottom: 0;
+                text-align: center;
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2 class="mb-3 text-center">Lista de Usuários</h2>
+
+    <div class="form-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por código...">
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="usersTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Cidade</th>
+                <th>Tamanho da Camisa</th>
+                <th>Código</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Linhas de usuários serão inseridas via AJAX -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://www.piauicrono.com.br/js/jquery-3.3.1.min.js"></script>
+<script src="https://www.piauicrono.com.br/styles/bootstrap-4.1.2/bootstrap.min.js"></script>
+
+<script>
+    function carregarUsuarios(codigoFiltro = '') {
+        $.ajax({
+            url: '/api/users/list',
+            method: 'GET',
+            data: { code: codigoFiltro },
+            success: function(response) {
+                const tbody = $('#usersTable tbody');
+                tbody.empty();
+
+                if (response.length === 0) {
+                    tbody.append('<tr><td colspan="6" class="text-center">Nenhum usuário encontrado.</td></tr>');
+                    return;
+                }
+
+                response.forEach(user => {
+                    const row = `<tr>
+                        <td data-label="Nome">${user.name}</td>
+                        <td data-label="CPF">${user.cpf}</td>
+                        <td data-label="Cidade">${user.city}</td>
+                        <td data-label="Camisa">${user.shirt}</td>
+                        <td data-label="Código"><span class="user-code">${user.code}</span></td>
+                        <td data-label="Ações">
+                            <button class="btn btn-sm btn-outline-primary btn-copy" data-code="${user.code}">
+                                <i class="fa fa-copy"></i> Copiar
+                            </button>
+                        </td>
+                    </tr>`;
+                    tbody.append(row);
+                });
+
+                // Evento para copiar código
+                $('.btn-copy').click(function() {
+                    const code = $(this).data('code');
+                    navigator.clipboard.writeText(code).then(function() {
+                        alert('Código copiado: ' + code);
+                    });
+                });
+            },
+            error: function(xhr) {
+                alert('Erro ao carregar usuários: ' + xhr.responseText);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        carregarUsuarios();
+
+        $('#searchInput').on('input', function() {
+            const code = $(this).val().trim();
+            carregarUsuarios(code);
+        });
+    });
+</script>
+
+</body>
+</html>

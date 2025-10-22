@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>PiauíCrono</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="PiauíCrono">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://www.piauicrono.com.br/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap-4.1.2/bootstrap.min.css" th:href="@{/styles/bootstrap-4.1.2/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="styles/estrutura.css" th:href="@{/styles/estrutura.css}">
+    <link rel="stylesheet" type="text/css" href="styles/responsive.css" th:href="@{/styles/responsive.css}">
+    <link rel="stylesheet" type="text/css" href="styles/piaiucrono/geral.css" th:href="@{/styles/piaiucrono/geral.css}">
+    <link rel="stylesheet" type="text/css" href="styles/piaiucrono/style.css" th:href="@{/styles/piaiucrono/style.css}">
+    <style>
+        .modal {
+            text-align: center;
+            padding: 0!important;
+        }
+        
+        .modal:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px;
+        }
+        
+        .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
+        
+        .navbar-nav .nav-item .nav-link {
+            padding: 1.1em 1em!important;
+            letter-spacing: 1px;
+            color: var(--color_menu_link_top);
+            /*font-weight: lighter;*/
+        }
+        
+        .nav-link:hover {
+            color: red;
+        }
+        
+        .navbar-expand-md .navbar-nav .dropdown-menu {
+            border-top: 3px solid red;
+        }
+        
+        .dropdown-item {
+            font-size: 90%;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #EEE;
+            color: red;
+            font-size: 90%;
+        }
+        
+        nav {
+            -webkit-transition: padding-top .3s, padding-bottom .3s;
+            -moz-transition: padding-top .3s, padding-bottom .3s;
+            transition: padding-top .3s, padding-bottom .3s;
+            border: none;
+        }
+        /* mobile view */
+        
+        @media (max-width:500px) {
+            .navbar-nav {
+                background-color: var(--background_button_eventos);
+                border-top: 3px solid #fed136;
+                color: red;
+                z-index: 1;
+                margin-top: 5px;
+            }
+            .navbar-nav .nav-item .nav-link {
+                padding: 0.7em 1em!important;
+                font-size: 100%;
+                font-weight: 500;
+            }
+        }
+        
+        @media (max-width:768px) {
+            .banner-text {
+                padding: 150px 0 150px 0;
+            }
+        }
+        
+        @media all and (min-width: 992px) {
+            .navbar .nav-item .dropdown-menu {
+                display: none;
+            }
+            .navbar .nav-item:hover .nav-link {
+                color: #fff;
+            }
+            .navbar .nav-item:hover .dropdown-menu {
+                display: block;
+            }
+            .navbar .nav-item .dropdown-menu {
+                margin-top: 0;
+            }
+        }
+        
+        .navbar-nav .nav-item .nav-link {
+            letter-spacing: 0.5px;
+            color: var(--color_menu_link_top, yellow);
+            font-weight: lighter;
+            font-size: 95%;
+            background-color: var(--background_header_top, #EEE);
+        }
+        
+        .navbar-toggler {
+            background-color: var(--color-base-cliente, #FFF);
+            color: var(--color_menu_link_top, #FFF);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="super_container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="https://www.piauicrono.com.br/images/logo-piaui-crono.png" id="site-logo" alt="Piauí Crono">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav" aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                <div class="collapse navbar-collapse" id="main_nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/resultados" th:href="@{/resultados}">Resultados</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="events text-center site-events">
+            <h4>EVENTOS</h4>
+        </div>
+
+        <div class="home_container text-center" id="eventos-em-andamento ">
+            <div class="container ">
+                <div class="row " id="div-row-eventos " style="margin-top:10px ">
+                    <div class="col-lg-4 col-md-6 col-sm-12 ">
+                        <article class="event-card">
+                            <div class="event-card__content" style="border:1px solid #e6e6e6;padding:16px;border-radius:6px;background:#fff;">
+                                <h3 class="event-card__heading">1ª Corrida de Rua de São Francisco do Piauí<br><small style="font-weight:600">(São Francisco Run)</small></h3>
+                                <p class="event-card__info"><strong>Data:</strong> 27 de dezembro de 2025</p>
+                                <p class="event-card__info"><strong>Local:</strong> Praça de Evento (Centro) — Concentração 16:00 | Largadas a partir das 17:30</p>
+                                <div class="event-card__controls">
+                                    <br>
+                                    <a class="btn event-btn-primary" href="/regulamento/REGULAMENTO DA SÃO FRANCISCO RUN.docx 2.pdf 2.pdf" th:href="@{'/regulamento/REGULAMENTO DA SÃO FRANCISCO RUN.docx 2.pdf 2.pdf'}">Ver Regulamento</a>
+                                    <br>
+                                    <br>
+                                    <a class="btn event-btn-secondary" href="/run/" th:href="@{/run}">Inscrever-se</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer font-small stylish-color-dark " style="margin-top:10px;color:var(--color_texto_rodape,#FFF); background:linear-gradient(to right,var(--background_color_rodape,#000),var(--background_color_rodape_2,#000)) ">
+        <div class="container text-center text-md-left ">
+            <div class="row ">
+                <div class="col-xs-12 col-sm-12 col-md-4 " style="text-align:left; ">
+                    <h5 class="font-weight-bold text-uppercase mt-3 mb-4 ">CONTATO</h5>
+                    <div style=" font-weight:lighter;letter-spacing:0.6px;text-align:justify;line-height:30px ">
+                        <ul>
+                            <li> <i class="fa fa-instagram "></i> @sao_francisco.rum </li>
+                            <li> <i class="fa fa-envelope "></i> edsonramalho1942@gmail.com </li>
+                            <li> <i class="fa fa-whatsapp "></i> (89) 99458-5821 </li>
+                            <li> <i class="fa fa-whatsapp "></i> (89) 99410-5110 </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footer-copyright text-center " style="padding:14px;font-weight: lighter;font-size:90% ">
+            São Fransisco Run<br>
+        </div>
+    </footer>
+    <script>
+        (function() {
+            var toggler = document.querySelector('.navbar-toggler');
+            var nav = document.getElementById('main_nav');
+
+            if (!toggler || !nav) return;
+
+            function setExpanded(state) {
+                toggler.setAttribute('aria-expanded', state ? 'true' : 'false');
+            }
+
+            toggler.addEventListener('click', function(e) {
+                e.preventDefault();
+                var opening = !nav.classList.contains('show');
+                nav.classList.toggle('show');
+                setExpanded(opening);
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.classList.contains('nav-link')) {
+                    nav.classList.remove('show');
+                    setExpanded(false);
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                var isClickInside = nav.contains(e.target) || toggler.contains(e.target);
+                if (!isClickInside && nav.classList.contains('show')) {
+                    nav.classList.remove('show');
+                    setExpanded(false);
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

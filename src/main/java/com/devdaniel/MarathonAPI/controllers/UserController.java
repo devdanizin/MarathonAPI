@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,12 +23,22 @@ public class UserController {
     @Value("${external.api.key}")
     private String apiKey;
 
-    @GetMapping
-    public ResponseEntity<?> getUsers() {
+    /**
+     * Lista todos os usuários ou filtra por código (se informado)
+     */
+    @GetMapping("/list")
+    public ResponseEntity<?> getUsers(@RequestParam(required = false) String code) {
+        if (code != null && !code.trim().isEmpty()) {
+            List<User> filteredUsers = userService.findByCode(code.trim());
+            return ResponseEntity.ok(filteredUsers);
+        }
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PostMapping("/search")
+    /**
+     * Cria um novo usuário com base no CPF e CEP consultando APIs externas.
+     */
+    @PostMapping("/create")
     public ResponseEntity<?> createUserByCpf(@RequestBody Map<String, String> request) {
         String cpf = request.getOrDefault("cpf", "").replaceAll("\\D", "");
         String cep = request.getOrDefault("cep", "").replaceAll("\\D", "");
@@ -67,12 +78,12 @@ public class UserController {
 
             String genero = (String) data.get("genero");
             if (genero != null) {
-                user.setGender("M".equalsIgnoreCase(genero) ?
-                        com.devdaniel.MarathonAPI.enums.GenEnum.M :
-                        com.devdaniel.MarathonAPI.enums.GenEnum.F);
+                user.setGender("M".equalsIgnoreCase(genero)
+                        ? com.devdaniel.MarathonAPI.enums.GenEnum.M
+                        : com.devdaniel.MarathonAPI.enums.GenEnum.F);
             }
 
-            user.setShirt(shirtStr.charAt(0));
+            user.setShirt(String.valueOf(shirtStr.charAt(0)));
 
             if (cep.length() == 8) {
                 String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";

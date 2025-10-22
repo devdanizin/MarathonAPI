@@ -1,0 +1,140 @@
+html {
+    --color-base-cliente: #114958;
+    --background_header_top: #114958;
+    --background_header_top_2: #114958;
+    --background_color_eventos: #FFF;
+    --background_color_rodape: #1F1F1F;
+    --background_color_rodape_2: #000;
+    --background_button_cadastro_novidades: #000;
+    --background_button_eventos: #000;
+    --background_button_eventos_hover: #666;
+    --color_texto_rodape: #FFF;
+    --color_menu_link_top: #FFF;
+    --color_menu_rodape: #FFF;
+    --espacador_corpo_menu_top: 70px;
+}
+
+.classe-menu-rodape {
+    font-weight: lighter;
+    color: var(--color_menu_rodape, #FFF);
+}
+
+#button-buscar {
+    background-color: var(--background_button_eventos, #222);
+    color: #FFF;
+}
+
+#button-buscar:hover {
+    background-color: var(--background_button_eventos_hover, #C2BBA3);
+    color: #FFF;
+}
+
+.btn-inscricao-amigo,
+.btn-inscricao-minha,
+.btn-inscricao,
+.btn-info {
+    background-color: var(--background_button_cadastro_novidades, tomato);
+}
+
+.btn-info:hover {
+    background-color: var(--background_button_eventos_hover, #333);
+    color: #FFF;
+}
+
+.h5-titulo-rodape {
+    color: #C2BBA3;
+}
+
+.carousel-title {
+    color: #C2BBA3;
+}
+
+ul>a {
+    color: var(--color_menu_link_top, #FFF);
+}
+
+span>a {
+    color: var(--color_menu_link_top, #FFF);
+}
+
+li>a {
+    color: var(--color_menu_link_top, #FFF);
+}
+
+div>h5 {
+    color: #CCC;
+}
+
+a:hover {
+    color: var(--background_button_eventos_hover, yellow);
+}
+
+.container-flex {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    width: 100%;
+}
+
+.row-flex {
+    width: 32%;
+    margin: 1px;
+}
+
+.btn-segunda-via {
+    background-color: #0e90d2;
+    color: #FFF;
+    padding: 5px;
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+}
+
+.btn-segunda-via:hover {
+    background-color: #0c5460;
+    cursor: pointer
+}
+
+.blckbox {
+    color: #FFF;
+}
+
+.number {
+    color: #FFF;
+}
+
+@media screen and (max-width: 540px) {
+    .container-flex {
+        width: 100%;
+    }
+    .row-flex {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 541px)and (max-width: 720px) {
+    .container-flex {
+        width: 100%;
+    }
+    .row-flex {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 721px)and (max-width: 960px) {
+    .container-flex {
+        width: 100%;
+    }
+    .row-flex {
+        width: 32%;
+    }
+}
+
+@media screen and (min-width: 961px) {
+    .container-flex {
+        width: 65%;
+    }
+    .row-flex {
+        width: 32%;
+    }
+}

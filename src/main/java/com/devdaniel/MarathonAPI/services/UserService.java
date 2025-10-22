@@ -16,6 +16,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public List<User> findByCode(String code) {
+        return userRepository.findByCodeContainingIgnoreCase(code);
+    }
+
     public User create(User user) {
         if (userRepository.existsByCpf(user.getCpf())) {
             throw new DataIntegrityViolationException("Já existe um usuário com este CPF.");
