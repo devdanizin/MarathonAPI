@@ -93,20 +93,8 @@ public class UserController {
                         user.setCity("Cidade não encontrada");
                     }
 
-                } catch (Exception e1) {
-                    try {
-                        String urlViaCep = "https://viacep.com.br/ws/" + cep + "/json/";
-                        Map responseCep = restTemplate.getForObject(urlViaCep, Map.class);
-
-                        if (responseCep != null && responseCep.get("localidade") != null) {
-                            user.setCity((String) responseCep.get("localidade"));
-                        } else {
-                            user.setCity("Cidade não encontrada");
-                        }
-
-                    } catch (Exception e2) {
-                        user.setCity("Erro ao consultar CEP");
-                    }
+                } catch (Exception e) {
+                    user.setCity("Erro ao consultar CEP");
                 }
             } else {
                 user.setCity("CEP inválido");
