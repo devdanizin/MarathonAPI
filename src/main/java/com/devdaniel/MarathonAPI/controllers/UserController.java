@@ -74,37 +74,47 @@ public class UserController {
             }
 
             User user = new User();
-            user.setCpf((String) data.get("cpf"));
-            user.setName((String) data.get("nome"));
-            user.setBirthDate(LocalDate.parse((String) data.get("data_nascimento")));
 
-            String genero = (String) data.get("genero");
-            if (genero != null) {
-                user.setGender("M".equalsIgnoreCase(genero)
-                        ? com.devdaniel.MarathonAPI.enums.GenEnum.M
-                        : com.devdaniel.MarathonAPI.enums.GenEnum.F);
+            // Preenchendo todos os campos obrigatórios com fallback caso algum dado falhe
+            user.setCpf((String) data.getOrDefault("cpf", cpf));
+            user.setName((String) data.getOrDefault("nome", "Nome não informado"));
+
+            try {
+                user.setBirthDate(LocalDate.parse((String) data.getOrDefault("data_nascimento", "1900-01-01")));
+            } catch (Exception e) {
+                user.setBirthDate(LocalDate.of(1900, 1, 1));
             }
+
+            String genero = (String) data.getOrDefault("genero", "M");
+            user.setGender("M".equalsIgnoreCase(genero) ? com.devdaniel.MarathonAPI.enums.GenEnum.M
+                    : com.devdaniel.MarathonAPI.enums.GenEnum.F);
 
             user.setShirt(shirtStr);
 
+            // Cidade via CEP
             if (cep.length() == 8) {
-                String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";
-                Map responseCep = restTemplate.getForObject(urlCep, Map.class);
-                if (responseCep != null && responseCep.get("localidade") != null) {
-                    user.setCity((String) responseCep.get("localidade"));
-                } else {
+                try {
+                    String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";
+                    Map responseCep = restTemplate.getForObject(urlCep, Map.class);
+                    user.setCity(responseCep != null && responseCep.get("localidade") != null
+                            ? (String) responseCep.get("localidade")
+                            : "Cidade não encontrada");
+                } catch (Exception e) {
                     user.setCity("Cidade não encontrada");
                 }
             } else {
                 user.setCity("CEP inválido");
             }
 
+            // Salva no banco
             userService.create(user);
             return ResponseEntity.ok(user);
 
         } catch (Exception ex) {
+            ex.printStackTrace(); // log completo do erro
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Erro ao criar usuário: " + ex.getMessage());
         }
     }
+
 }
