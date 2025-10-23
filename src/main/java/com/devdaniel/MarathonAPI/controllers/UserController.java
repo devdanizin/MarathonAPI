@@ -83,16 +83,35 @@ public class UserController {
             user.setShirt(shirtStr);
 
             if (cep.length() == 8) {
-                String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";
-                Map responseCep = restTemplate.getForObject(urlCep, Map.class);
-                if (responseCep != null && responseCep.get("localidade") != null) {
-                    user.setCity((String) responseCep.get("localidade"));
-                } else {
-                    user.setCity("Cidade não encontrada");
+                try {
+                    String urlCepBrasilAPI = "https://brasilapi.com.br/api/cep/v1/" + cep;
+                    Map responseCep = restTemplate.getForObject(urlCepBrasilAPI, Map.class);
+
+                    if (responseCep != null && responseCep.get("city") != null) {
+                        user.setCity((String) responseCep.get("city"));
+                    } else {
+                        user.setCity("Cidade não encontrada");
+                    }
+
+                } catch (Exception e1) {
+                    try {
+                        String urlViaCep = "https://viacep.com.br/ws/" + cep + "/json/";
+                        Map responseCep = restTemplate.getForObject(urlViaCep, Map.class);
+
+                        if (responseCep != null && responseCep.get("localidade") != null) {
+                            user.setCity((String) responseCep.get("localidade"));
+                        } else {
+                            user.setCity("Cidade não encontrada");
+                        }
+
+                    } catch (Exception e2) {
+                        user.setCity("Erro ao consultar CEP");
+                    }
                 }
             } else {
                 user.setCity("CEP inválido");
             }
+
 
             List<String> validShirts = List.of("PP", "P", "M", "G", "GG", "XG");
             if (!validShirts.contains(shirtStr)) {
