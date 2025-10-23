@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = {"https://saofransciscorun.com"})
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
