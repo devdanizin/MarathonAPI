@@ -49,10 +49,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("CPF inválido. Deve conter 11 dígitos.");
         }
 
-        if (!shirtStr.matches("^[A-Za-z]$")) {
-            return ResponseEntity.badRequest().body("Tamanho da camisa inválido. Deve ser uma letra (A-Z).");
-        }
-
         String urlCpf = "https://apicpf.com/api/consulta?cpf=" + cpf;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", apiKey);
