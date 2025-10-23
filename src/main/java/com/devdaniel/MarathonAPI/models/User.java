@@ -37,7 +37,7 @@ public class User {
     @Column(length = 1, nullable = false)
     private GenEnum gender;
 
-    @Column(length = 2 )
+    @Column(length = 3 )
     @Pattern(regexp = "^[A-Za-z]$", message = "A camisa deve ter um tamanho.")
     private String shirt;
 

@@ -49,8 +49,9 @@ public class UserController {
             return ResponseEntity.badRequest().body("CPF inválido. Deve conter 11 dígitos.");
         }
 
-        if (!shirtStr.matches("^[A-Za-z]$")) {
-            return ResponseEntity.badRequest().body("Tamanho da camisa inválido. Deve ser uma letra (A-Z).");
+        List<String> validShirts = List.of("PP", "P", "M", "G", "GG", "XG");
+        if (!validShirts.contains(shirtStr)) {
+            return ResponseEntity.badRequest().body("Tamanho da camisa inválido. Valores válidos: " + validShirts);
         }
 
         String urlCpf = "https://apicpf.com/api/consulta?cpf=" + cpf;
@@ -84,7 +85,7 @@ public class UserController {
                         : com.devdaniel.MarathonAPI.enums.GenEnum.F);
             }
 
-            user.setShirt(String.valueOf(shirtStr.charAt(0)));
+            user.setShirt(shirtStr);
 
             if (cep.length() == 8) {
                 String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";
